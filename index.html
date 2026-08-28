@@ -194,6 +194,11 @@
     text-transform:uppercase; font-weight:500; padding:1.05rem 2rem; border-radius:999px; transition:background .3s ease, transform .2s ease;
   }
   .join-btn:hover{ background:var(--or-clair); transform:translateY(-2px); }
+  .live-player{
+    position:relative; width:100%; aspect-ratio:16/9; border-radius:8px; overflow:hidden;
+    background:#000; border:1px solid rgba(214,165,76,.35);
+  }
+  .live-player iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
   .live-note{ text-align:center; font-size:.72rem; color:var(--creme); opacity:.75; margin-top:.4rem; }
 
   /* ---------- diaporama ---------- */
@@ -333,18 +338,16 @@
       <p class="live-sub" data-i18n="liveSub">29 Août — où que vous soyez</p>
     </div>
     <div class="live-body">
-      <div class="live-row">
-        <div><span class="lbl" data-i18n="lblMeetingId">ID de réunion</span><span class="val" id="teams-id">–</span></div>
+      <div class="live-player">
+        <iframe id="yt-player" src="" title="Diffusion en direct" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen loading="lazy"></iframe>
       </div>
-      <div class="live-row">
-        <div><span class="lbl" data-i18n="lblPasscode">Code secret</span><span class="val" id="teams-code">–</span></div>
-      </div>
-      <a href="#" class="join-btn" id="join-btn" target="_blank" rel="noopener">
-        <span class="pulse-dot" aria-hidden="true"></span> <span data-i18n="joinBtnLabel">Rejoindre le direct</span>
+      <a href="https://youtube.com/live/qUyNJztBXZo?feature=share" class="join-btn" id="join-btn" target="_blank" rel="noopener">
+        <span class="pulse-dot" aria-hidden="true"></span> <span data-i18n="joinBtnLabel">Regarder sur YouTube</span>
       </a>
-      <div class="live-note" data-i18n="liveNote1">En cliquant sur « Rejoindre le direct », vous entrez directement — aucun code à saisir.
-        L'ID et le code ci-dessus ne servent qu'en secours si vous ouvrez l'application Teams manuellement.</div>
-      <div class="live-note" data-i18n="liveNote2">Micros et caméras des invités seront coupés — installez-vous, il n'y a rien à faire, juste à profiter du moment.</div>
+      <div class="live-note" data-i18n="liveNote1">La vidéo se joue directement ici, sur cette page — aucune application à installer.</div>
+      <div class="live-note" data-i18n="liveNote2">Si la vidéo ne démarre pas automatiquement, cliquez sur « Regarder sur YouTube » ci-dessus.</div>
     </div>
   </div>
 </section>
@@ -399,7 +402,7 @@
 
   // ---- compte à rebours jusqu'au 29 août ----
   (function(){
-    const target = new Date('2026-08-29T10:00:00'); // MODIFIER l'heure si besoin
+    const target = new Date('2026-08-29T14:00:00'); // MODIFIER l'heure si besoin
     function tick(){
       const now = new Date();
       let diff = Math.max(0, target - now);
@@ -432,11 +435,9 @@
         liveBadgeLg: "En direct",
         liveTitle: "Suivre la cérémonie",
         liveSub: "29 Août — où que vous soyez",
-        lblMeetingId: "ID de réunion",
-        lblPasscode: "Code secret",
-        joinBtnLabel: "Rejoindre le direct",
-        liveNote1: "En cliquant sur « Rejoindre le direct », vous entrez directement — aucun code à saisir. L'ID et le code ci-dessus ne servent qu'en secours si vous ouvrez l'application Teams manuellement.",
-        liveNote2: "Micros et caméras des invités seront coupés — installez-vous, il n'y a rien à faire, juste à profiter du moment.",
+        joinBtnLabel: "Regarder sur YouTube",
+        liveNote1: "La vidéo se joue directement ici, sur cette page — aucune application à installer.",
+        liveNote2: "Si la vidéo ne démarre pas automatiquement, cliquez sur « Regarder sur YouTube » ci-dessus.",
         galleryKicker: "Notre histoire",
         galleryH2: "En images",
         footDate: "Noce à Cana ou Canaan · 29 Août"
@@ -455,11 +456,9 @@
         liveBadgeLg: "Live",
         liveTitle: "Follow the ceremony",
         liveSub: "August 29 — wherever you are",
-        lblMeetingId: "Meeting ID",
-        lblPasscode: "Passcode",
-        joinBtnLabel: "Join the livestream",
-        liveNote1: "By clicking “Join the livestream,” you'll enter directly — no code needed. The ID and passcode above are only a backup if you open the Teams app manually.",
-        liveNote2: "Guests' mics and cameras will be off — sit back, there's nothing to do, just enjoy the moment.",
+        joinBtnLabel: "Watch on YouTube",
+        liveNote1: "The video plays right here on this page — no app to install.",
+        liveNote2: "If the video doesn't start automatically, click “Watch on YouTube” above.",
         galleryKicker: "Our story",
         galleryH2: "In pictures",
         footDate: "Wedding at Cana or Canaan · August 29"
@@ -500,14 +499,12 @@
     });
   })();
 
-  // ---- infos Teams ----
+  // ---- direct YouTube ----
   (function(){
-    const TEAMS_LINK = "https://teams.live.com/meet/9349896022257?p=vdeNhWCk69gQBwtkYo";
-    const MEETING_ID = "934 989 602 225 7";
-    const PASSCODE = "pk9Bf6";
-    document.getElementById('teams-id').textContent = MEETING_ID;
-    document.getElementById('teams-code').textContent = PASSCODE;
-    document.getElementById('join-btn').href = TEAMS_LINK;
+    const YT_VIDEO_ID = "qUyNJztBXZo"; // depuis https://youtube.com/live/qUyNJztBXZo
+    const YT_WATCH_LINK = "https://youtube.com/live/" + YT_VIDEO_ID + "?feature=share";
+    document.getElementById('yt-player').src = "https://www.youtube.com/embed/" + YT_VIDEO_ID;
+    document.getElementById('join-btn').href = YT_WATCH_LINK;
 
     // ---- effet "wow" + révélation photos + musique au clic sur le premier bouton du site ----
     const heroJoinBtn = document.getElementById('hero-join-btn');
@@ -567,10 +564,8 @@
       }, 1300);
 
       setTimeout(()=>{
-        if(TEAMS_LINK && TEAMS_LINK.indexOf('REMPLACER') !== 0){
-          window.open(TEAMS_LINK, '_blank', 'noopener');
-        }
-      }, 1600);
+        document.getElementById('live').scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 2600);
     });
   })();
 
